@@ -11,10 +11,77 @@
   <link rel="stylesheet" href="powerstay.css" />
 </head>
 <body>
-  <div class="sidebar">
-    <h2>PowerStay</h2>
-    <button id="btn-menu" class="active"><i class="fa fa-home"></i> <span>Início</span></button>
-    <button id="btn-frequencia"><i class="fa fa-calendar-check"></i> <span>Registro de Frequência</span></button>
-    <button id="btn-cadastrar-turma"><i class="fa fa-users"></i> <span>Cadastrar Turma</span></button>
-    <button id="btn-cadastrar-aluno"><i class="fa fa-user-plus"></i> <span>Cadastrar Aluno</span></button>
-    <button id="b
+  <!-- Tela Login -->
+  <section id="login-screen" class="card login-card">
+    <h2>Login PowerStay</h2>
+    <input type="text" id="input-username" placeholder="Usuário" />
+    <input type="password" id="input-password" placeholder="Senha" />
+    <button id="btn-login" class="primary">Entrar</button>
+    <div id="login-msg" class="feedback-msg"></div>
+  </section>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden">
+    <div class="sidebar">
+      <h2>PowerStay</h2>
+      <button id="btn-menu" class="active"><i class="fa fa-home"></i> <span>Início</span></button>
+      <button id="btn-frequencia"><i class="fa fa-calendar-check"></i> <span>Registro de Frequência</span></button>
+      <button id="btn-cadastrar-turma"><i class="fa fa-users"></i> <span>Cadastrar Turma</span></button>
+      <button id="btn-cadastrar-aluno"><i class="fa fa-user-plus"></i> <span>Cadastrar Aluno</span></button>
+      <button id="btn-relatorio"><i class="fa fa-file-alt"></i> <span>Relatório Mensal</span></button>
+      <button id="btn-logout"><i class="fa fa-sign-out-alt"></i> <span>Sair</span></button>
+    </div>
+
+    <div class="header">
+      <h3 id="header-title">Bem-vindo ao PowerStay</h3>
+    </div>
+
+    <main class="main">
+      <!-- Início -->
+      <section id="menu-screen" class="card">
+        <h2>Início</h2>
+        <p>Bem-vindo, <span id="welcome-user"></span>!</p>
+      </section>
+
+      <!-- Registro de Frequência -->
+      <section id="frequencia-screen" class="card hidden">
+        <h2>Registro de Frequência</h2>
+        <div id="lista-alunos"></div>
+        <button class="primary" id="btn-salvar-frequencia">Salvar Frequência</button>
+        <div id="msg-frequencia" class="feedback-msg"></div>
+      </section>
+
+      <!-- Cadastrar Turma -->
+      <section id="cadastrar-turma-screen" class="card hidden">
+        <h2>Cadastrar Nova Turma</h2>
+        <input type="text" id="turma-nome" placeholder="Nome da Turma" />
+        <input type="text" id="turma-modalidade" placeholder="Modalidade" />
+        <button class="primary" id="btn-salvar-turma">Salvar Turma</button>
+        <div id="msg-turma" class="feedback-msg"></div>
+      </section>
+
+      <!-- Cadastrar Aluno -->
+      <section id="cadastrar-aluno-screen" class="card hidden">
+        <h2>Cadastrar Novo Aluno</h2>
+        <input type="text" id="aluno-nome" placeholder="Nome do Aluno" />
+        <input type="number" id="aluno-idade" placeholder="Idade" min="1" />
+        <input type="text" id="aluno-foto" placeholder="URL da Foto" />
+        <select id="aluno-turma"></select>
+        <button class="primary" id="btn-salvar-aluno">Salvar Aluno</button>
+        <div id="msg-aluno" class="feedback-msg"></div>
+      </section>
+
+      <!-- Relatório Mensal -->
+      <section id="relatorio-screen" class="card hidden">
+        <h2>Relatório Mensal</h2>
+        <input type="month" id="relatorio-mes" />
+        <select id="relatorio-turma"></select>
+        <button class="primary" id="btn-gerar-relatorio">Gerar Relatório</button>
+        <div id="relatorio-resultado" style="margin-top: 20px;"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="powerstay.js"></script>
+</body>
+</html>
