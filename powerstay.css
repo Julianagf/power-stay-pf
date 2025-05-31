@@ -1,155 +1,146 @@
-// Dados de usuários para exemplo simples (login hardcoded)
-const usuarios = [
-  { usuario: 'instrutor', senha: '123456', nome: 'Instrutor(a)' },
-  { usuario: 'admin', senha: 'admin123', nome: 'Administrador' }
-];
-
-let turmas = [];
-let alunos = [];
-
-function mostrarMensagem(id, mensagem, isErro = false) {
-  const el = document.getElementById(id);
-  el.textContent = mensagem;
-  el.classList.remove('feedback-error', 'feedback-success');
-  el.classList.add(isErro ? 'feedback-error' : 'feedback-success');
-  el.style.display = 'block';
-  setTimeout(() => {
-    el.style.display = 'none';
-  }, 4000);
+/* Reset e base */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-// Login
-document.getElementById('btn-login').addEventListener('click', () => {
-  const user = document.getElementById('input-username').value.trim();
-  const pass = document.getElementById('input-password').value.trim();
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
 
-  if (!user || !pass) {
-    mostrarMensagem('login-msg', 'Preencha todos os campos!', true);
-    return;
+/* Tela de login - card */
+.login-card {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  width: 360px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+.login-card h2 {
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 1.2px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 18px;
+  border: 1.8px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.login-card input:focus {
+  border-color: #764ba2;
+  outline: none;
+  box-shadow: 0 0 5px #764ba2;
+}
+
+.login-card button.primary {
+  width: 100%;
+  background: #764ba2;
+  border: none;
+  padding: 14px 0;
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-card button.primary:hover {
+  background: #5b3577;
+}
+
+/* Mensagem de erro e sucesso */
+.feedback-msg {
+  margin-top: 12px;
+  font-size: 14px;
+  display: none;
+}
+
+.feedback-error {
+  color: #d9534f;
+}
+
+.feedback-success {
+  color: #5cb85c;
+}
+
+/* Animação */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-
-  const found = usuarios.find(u => u.usuario === user && u.senha === pass);
-  if (found) {
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-    document.getElementById('welcome-user').textContent = found.nome;
-    showMenu();
-  } else {
-    mostrarMensagem('login-msg', 'Usuário ou senha inválidos!', true);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-});
-
-// Funções para troca de telas
-function toggleScreen(screenId, title) {
-  document.querySelectorAll('.main .card').forEach(card => card.classList.add('hidden'));
-  document.getElementById(screenId).classList.remove('hidden');
-  document.getElementById('header-title').textContent = title;
 }
 
-function showMenu() {
-  toggleScreen('menu-screen', 'Início');
+/* Dashboard - simplificado aqui para foco na login e registro */
+.hidden {
+  display: none;
 }
 
-function showRegistroFrequencia() {
-  toggleScreen('frequencia-screen', 'Registro de Frequência');
-  atualizarListaAlunos();
+/* Para inputs e botões nas telas internas manter padrão parecido */
+input, select, button {
+  font-family: inherit;
 }
 
-function showCadastrarTurma() {
-  toggleScreen('cadastrar-turma-screen', 'Cadastrar Turma');
+/* Cards dashboard */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 30px auto;
 }
 
-function showCadastrarAluno() {
-  toggleScreen('cadastrar-aluno-screen', 'Cadastrar Aluno');
-  atualizarSelectTurmas('aluno-turma');
+/* Inputs na dashboard */
+.card input, .card select {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
 }
 
-function showRelatorioMensal() {
-  toggleScreen('relatorio-screen', 'Relatório Mensal');
-  atualizarSelectTurmas('relatorio-turma');
+.card input:focus, .card select:focus {
+  border-color: #764ba2;
+  outline: none;
+  box-shadow: 0 0 5px #764ba2;
 }
 
-function logout() {
-  document.getElementById('dashboard').classList.add('hidden');
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('input-username').value = '';
-  document.getElementById('input-password').value = '';
+/* Botões dashboard */
+button.primary {
+  background: #764ba2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-// Salvar turma
-function salvarTurma() {
-  const nome = document.getElementById('turma-nome').value.trim();
-  const modalidade = document.getElementById('turma-modalidade').value.trim();
-  const msg = document.getElementById('msg-turma');
-  if (!nome || !modalidade) {
-    mostrarMensagem('msg-turma', 'Preencha todos os campos!', true);
-    return;
-  }
-  turmas.push({ nome, modalidade });
-  mostrarMensagem('msg-turma', 'Turma cadastrada com sucesso!');
-  document.getElementById('turma-nome').value = '';
-  document.getElementById('turma-modalidade').value = '';
-  atualizarSelectTurmas('aluno-turma');
-  atualizarSelectTurmas('relatorio-turma');
-}
-
-// Salvar aluno
-function salvarAluno() {
-  const nome = document.getElementById('aluno-nome').value.trim();
-  const idade = document.getElementById('aluno-idade').value.trim();
-  const foto = document.getElementById('aluno-foto').value.trim();
-  const turma = document.getElementById('aluno-turma').value;
-  if (!nome || !idade || !foto || !turma) {
-    mostrarMensagem('msg-aluno', 'Preencha todos os campos!', true);
-    return;
-  }
-  alunos.push({ nome, idade, foto, turma });
-  mostrarMensagem('msg-aluno', 'Aluno cadastrado com sucesso!');
-  document.getElementById('aluno-nome').value = '';
-  document.getElementById('aluno-idade').value = '';
-  document.getElementById('aluno-foto').value = '';
-  atualizarListaAlunos();
-}
-
-// Atualiza selects
-function atualizarSelectTurmas(selectId) {
-  const select = document.getElementById(selectId);
-  select.innerHTML = '';
-  turmas.forEach(t => {
-    const opt = document.createElement('option');
-    opt.value = t.nome;
-    opt.textContent = `${t.nome} (${t.modalidade})`;
-    select.appendChild(opt);
-  });
-}
-
-// Lista alunos na frequência
-function atualizarListaAlunos() {
-  const lista = document.getElementById('lista-alunos');
-  lista.innerHTML = '';
-  alunos.forEach(a => {
-    lista.innerHTML += `
-      <div class='card' style="display:flex; align-items:center; gap: 15px;">
-        <img src='${a.foto}' class='profile-pic' alt='${a.nome}' />
-        <div>
-          <strong>${a.nome}</strong> | ${a.idade} anos | Turma: ${a.turma}
-        </div>
-      </div>`;
-  });
-}
-
-// Gerar relatório simples
-function gerarRelatorio() {
-  const turma = document.getElementById('relatorio-turma').value;
-  const mes = document.getElementById('relatorio-mes').value;
-  const resultado = document.getElementById('relatorio-resultado');
-  if (!turma || !mes) {
-    resultado.innerHTML = '<p style="color: #d9534f;">Selecione o mês e a turma!</p>';
-    return;
-  }
-  resultado.innerHTML = `<h4>Relatório de Frequência - ${mes}</h4>`;
-  const alunosTurma = alunos.filter(a => a.turma === turma);
-  alunosTurma.forEach(a => {
-    resultado.innerHTML += `<p>${a.nome} | ${a.idade} anos</p>`;
-  });
+button.primary:hover {
+  background: #5b3577;
 }
